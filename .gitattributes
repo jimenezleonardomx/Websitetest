@@ -1,0 +1,6 @@
+* text=auto eol=lf
+
+# Generated artifacts: never hand-merge these, regenerate them.
+# On conflict git keeps our side; then re-run the generator on main.
+graphify-out/**   merge=ours linguist-generated=true
+package-lock.json merge=ours linguist-generated=true
