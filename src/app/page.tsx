@@ -2,22 +2,22 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
 
-const PIECES = [
+const HIGHLIGHTS = [
   {
-    title: 'Design tokens',
-    body: 'src/app/tokens.css holds every color, size and shadow. Components reference them, never raw values.',
+    title: 'Aged Havanas',
+    body: 'A rotating selection of Cuban cigars rested in our cellar humidor for years before they reach the shelf.',
   },
   {
-    title: 'Shared contract',
-    body: 'src/lib/types.ts is the boundary between frontend and backend work. Change it in its own PR.',
+    title: 'New World selects',
+    body: 'Hand-picked boxes from Nicaragua, the Dominican Republic and beyond, chosen by taste, not by name.',
   },
   {
-    title: 'Project skill',
-    body: '.claude/skills/project-ui teaches both agents the same rules. It ships with the repo.',
+    title: 'The humidor room',
+    body: 'A private, temperature-held room where regulars keep their own boxes between visits.',
   },
   {
-    title: 'CI gate',
-    body: 'Format, lint, types and build run on every PR, so style cannot drift quietly.',
+    title: 'Advice, not upselling',
+    body: 'Staff who smoke what they sell, and will point you to something cheaper if it suits you better.',
   },
 ]
 
@@ -26,26 +26,26 @@ export default function Home() {
     <main className="py-24">
       <Container>
         <p className="text-caption text-accent font-medium tracking-wide uppercase">
-          Scaffold ready
+          Mount Street, London
         </p>
-        <h1 className="max-w-measure text-display text-ink md:text-hero mt-4">
-          One repo, two people, one house style.
+        <h1 className="max-w-measure text-display text-ink md:text-hero mt-4 font-serif">
+          Fine Havana cigars, kept the old way.
         </h1>
         <p className="max-w-measure text-lead text-ink-muted mt-6">
-          Everything that keeps the two of you consistent is a committed file, so both Claude Code
-          agents read the same rules on day one. Start by editing this page.
+          Sautter has traded in Cuban and New World cigars from the same corner of Mayfair for two
+          generations. Come in, take your time, and leave with something worth the wait.
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Button>Get started</Button>
-          <Button variant="secondary">Read CLAUDE.md</Button>
+          <Button>Browse the cigars</Button>
+          <Button variant="secondary">Visit the shop</Button>
         </div>
 
         <div className="mt-20 grid gap-4 sm:grid-cols-2">
-          {PIECES.map((piece) => (
-            <Card key={piece.title}>
-              <h2 className="text-title text-ink">{piece.title}</h2>
-              <p className="text-body text-ink-muted mt-2">{piece.body}</p>
+          {HIGHLIGHTS.map((item) => (
+            <Card key={item.title} className="scroll-drift">
+              <h2 className="text-title text-ink font-serif">{item.title}</h2>
+              <p className="text-body text-ink-muted mt-2">{item.body}</p>
             </Card>
           ))}
         </div>
