@@ -16,21 +16,21 @@ Confirmed for this project:
 
 ## How it works
 
-There is no FTP involved. Deployment goes through cPanel's **Git™ Version
-Control** feature:
+Deployment goes through cPanel's **Git™ Version Control** feature -- no FTP.
 
 1. `npm run build` produces `out/` -- the entire site as static files.
 2. Those files get committed to a `deploy` branch in this repo. `deploy` is
    **generated content only** -- always force-pushed, never edited by hand,
    never merged into `main`.
-3. cPanel has a repository (named `website`) cloned at `public_html/tabaco`,
-   configured with **Deployment Branch: `deploy`**.
-4. Clicking **Deploy Repository** in that cPanel panel does a fetch + deploy
-   in one step -- it pulls the latest `deploy` branch and copies it into
-   `public_html/tabaco`. Confirmed working by hand on 2026-09-03.
+3. cPanel has a repository (named `website`) cloned directly at
+   `public_html/tabaco`, configured with **Deployment Branch: `deploy`**.
+4. `git fetch origin deploy && git reset --hard origin/deploy`, run inside
+   that folder, pulls the latest build into place. (Clicking "Deploy
+   Repository" in cPanel's UI does exactly this internally -- confirmed by
+   hand on 2026-09-03.)
 
 `.github/workflows/deploy.yml` automates steps 1-2 on every push to `main`,
-and can also trigger step 4 via cPanel's API once the secrets below are set.
+and does step 4 itself over SSH once the secrets below are set.
 
 ## Manual deploy (the fallback, always works)
 
@@ -45,15 +45,27 @@ and can also trigger step 4 via cPanel's API once the secrets below are set.
 ## Automated deploy -- finishing the setup
 
 The build-and-push-to-`deploy` half already runs on every push to `main`, no
-setup needed. The cPanel-trigger half needs four repo secrets (Settings ->
-Secrets and variables -> Actions -> New repository secret):
+setup needed. The server-pull half needs a dedicated SSH deploy key and five
+repo secrets (Settings -> Secrets and variables -> Actions -> New repository
+secret).
 
-| Secret             | Value                                                                                                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| `CPANEL_HOST`      | Your cPanel server hostname **with port**, e.g. `server123.smoothhosting.co.uk:2083` -- found in the URL bar while logged into cPanel |
-| `CPANEL_USERNAME`  | Your cPanel account username (not the FTP or email address -- the master login for the whole hosting account)                         |
-| `CPANEL_REPO_PATH` | `/home/sites/25a/8/8b5ff4250a/public_html/tabaco`                                                                                     |
-| `CPANEL_API_TOKEN` | Generate one in cPanel: **Security -> Manage API Tokens -> Create**                                                                   |
+**One-time key setup:**
+
+1. A dedicated ed25519 keypair -- generated only for this, not reused from
+   anywhere else, so it can only ever do this one thing.
+2. Public half added to **cPanel -> SSH Access -> Manage SSH Keys -> Import
+   Key**, then **Authorize**d.
+3. Private half pasted into the `SSH_PRIVATE_KEY` secret below.
+
+**Secrets:**
+
+| Secret            | Value                                                                            |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `SSH_PRIVATE_KEY` | The full deploy private key, including the `BEGIN`/`END` lines                   |
+| `SSH_HOST`        | From cPanel -> SSH Access, e.g. `server123.smoothhosting.co.uk`                  |
+| `SSH_USER`        | Your cPanel master username -- also shown on the SSH Access page                 |
+| `SSH_PORT`        | From cPanel -> SSH Access -- often `22`, but shared hosts often use a custom one |
+| `REPO_PATH`       | `/home/sites/25a/8/8b5ff4250a/public_html/tabaco`                                |
 
 Also needed for the build step itself (same as before):
 
@@ -62,17 +74,13 @@ Also needed for the build step itself (same as before):
 | `NEXT_PUBLIC_SUPABASE_URL`             | from `.env.local` |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | from `.env.local` |
 
-Until `CPANEL_HOST` is set, the workflow still builds and pushes `deploy`
+Until `SSH_HOST` is set, the workflow still builds and pushes `deploy`
 automatically -- it just posts a warning instead of failing, and you click
 **Deploy Repository** in cPanel by hand for that last step.
 
-**This part is less certain than everything else here.** The remote-trigger
-call uses cPanel's UAPI (`VersionControl` module, `deployment_create`
-function) -- confirmed to exist, but not exhaustively tested against Smooth
-Hosting's specific cPanel version. If the "Trigger cPanel deploy" step in
-Actions fails, the static export still made it to the `deploy` branch safely
--- just click Deploy Repository manually and let me know what error came back
-so we can adjust the call.
+The deploy step itself is the exact two git commands from "How it works"
+above, run over SSH -- it doesn't depend on an undocumented API surface the
+way an earlier version of this file (using cPanel's UAPI) did.
 
 ## Checklist before every deploy
 

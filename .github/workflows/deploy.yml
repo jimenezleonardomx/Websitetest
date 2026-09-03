@@ -14,10 +14,10 @@ jobs:
     # promoting to job-level env is the documented workaround, checked below
     # via the `env` context instead.
     env:
-      CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-      CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-      CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
-      CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      REPO_PATH: ${{ secrets.REPO_PATH }}
     steps:
       - uses: actions/checkout@v4
 
@@ -57,30 +57,32 @@ jobs:
           git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git push -f origin deploy
 
-      # cPanel's Git Version Control "Deploy Repository" button does a fetch
-      # + deploy in one action (confirmed by hand before automating this) --
-      # so triggering it remotely is a single UAPI call.
-      - name: Trigger cPanel deploy
-        if: ${{ env.CPANEL_HOST != '' }}
+      # cPanel's Git checkout at $REPO_PATH IS public_html/tabaco directly (no
+      # separate rsync target) -- so pulling the deploy branch there is the
+      # entire deploy. Verified this exact directory layout by hand before
+      # automating it (2026-09-03).
+      - name: Pull deploy branch onto the server over SSH
+        if: ${{ env.SSH_HOST != '' }}
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           set -e
-          response=$(curl -sS -w '\n%{http_code}' \
-            -H "Authorization: cpanel ${CPANEL_USERNAME}:${CPANEL_API_TOKEN}" \
-            --data-urlencode "repository_root=${CPANEL_REPO_PATH}" \
-            "https://${CPANEL_HOST}/execute/VersionControl/deployment_create")
-          body=$(echo "$response" | sed '$d')
-          status=$(echo "$response" | tail -n1)
-          echo "$body"
-          if [ "$status" -ge 400 ]; then
-            echo "::error::cPanel returned HTTP $status -- see docs/deploy.md for the manual fallback"
-            exit 1
-          fi
-          if ! echo "$body" | grep -q '"status":1'; then
-            echo "::error::cPanel API reported failure -- see docs/deploy.md for the manual fallback"
-            exit 1
-          fi
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: cPanel auto-deploy not configured
-        if: ${{ env.CPANEL_HOST == '' }}
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" -o StrictHostKeyChecking=accept-new \
+            "$SSH_USER@$SSH_HOST" bash -s <<EOF
+              set -e
+              cd "$REPO_PATH"
+              git fetch origin deploy
+              git reset --hard origin/deploy
+              echo "Deployed commit: \$(git rev-parse HEAD)"
+              echo "Expected commit: ${{ github.sha }} (source commit; deploy branch commit will differ, this just confirms the pull ran)"
+          EOF
+
+      - name: SSH auto-deploy not configured
+        if: ${{ env.SSH_HOST == '' }}
         run: |
-          echo "::warning::Static export pushed to the deploy branch, but CPANEL_HOST is not set, so cPanel was not triggered. Click Deploy in cPanel's Git Version Control panel manually, or see docs/deploy.md to finish wiring this up."
+          echo "::warning::Static export pushed to the deploy branch, but SSH_HOST is not set, so the server was not updated. Click Deploy Repository in cPanel's Git Version Control panel manually, or see docs/deploy.md to finish wiring this up."
