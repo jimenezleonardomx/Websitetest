@@ -4,3 +4,9 @@ out
 node_modules
 graphify-out
 package-lock.json
+
+# vendored skill code -- not ours to reformat
+.claude/skills/impeccable
+.github/skills/impeccable
+.claude/agents/impeccable-*.md
+.github/agents/impeccable-*.agent.md

@@ -38,3 +38,7 @@ supabase/.temp
 graphify-out/*
 !graphify-out/graph.json
 !graphify-out/GRAPH_REPORT.md
+
+# impeccable: per-session runtime state, not content to track
+.claude/skills/impeccable/scripts/.impeccable/
+.github/skills/impeccable/scripts/.impeccable/
