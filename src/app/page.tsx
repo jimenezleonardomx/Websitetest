@@ -43,7 +43,7 @@ export default function Home() {
 
         <div className="mt-20 grid gap-4 sm:grid-cols-2">
           {HIGHLIGHTS.map((item) => (
-            <Card key={item.title}>
+            <Card key={item.title} className="scroll-drift">
               <h2 className="text-title text-ink font-serif">{item.title}</h2>
               <p className="text-body text-ink-muted mt-2">{item.body}</p>
             </Card>

@@ -33,3 +33,27 @@
     }
   }
 }
+
+/*
+ * Scroll drift -- the one scroll-linked motion allowed by project-ui.
+ * Native scroll-timeline, no JS. Browsers without support just render the
+ * resting state (see @supports below), so this is a progressive enhancement.
+ */
+@keyframes scroll-drift-settle {
+  from {
+    opacity: 0.85;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .scroll-drift {
+    animation: scroll-drift-settle linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
+}

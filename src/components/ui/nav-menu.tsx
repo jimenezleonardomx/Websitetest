@@ -14,7 +14,7 @@ export type NavPage = {
  */
 export function NavMenu({ pages, className }: { pages: NavPage[]; className?: string }) {
   return (
-    <div className={cn('group relative', className)}>
+    <div className={cn('group relative pb-2', className)}>
       <button
         type="button"
         aria-haspopup="true"
@@ -38,7 +38,7 @@ export function NavMenu({ pages, className }: { pages: NavPage[]; className?: st
 
       <div
         className={cn(
-          'shadow-float border-line bg-surface rounded-panel absolute top-full left-0 z-10 mt-2 w-72 border p-2',
+          'shadow-float border-line bg-surface rounded-panel absolute top-full left-0 z-10 w-72 border p-2',
           'pointer-events-none opacity-0',
           'group-hover:pointer-events-auto group-hover:opacity-100',
           'group-focus-within:pointer-events-auto group-focus-within:opacity-100',

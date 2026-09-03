@@ -72,8 +72,17 @@ well-set document, not a dashboard.
 
 - `transition-colors duration-150 ease-out-soft` for hover and focus. That is
   the default and it covers most cases.
-- Entrances only where something genuinely appears (dialog, toast, popover).
-  No scroll-triggered reveals, no parallax, no bouncing easings.
+- Entrances only where something genuinely appears (dialog, toast, popover),
+  or the one scroll-drift pattern below. No other scroll-triggered reveals, no
+  parallax on background/decorative layers, no bouncing easings.
+- **Scroll drift (the one allowed scroll-linked effect):** a card or image may
+  settle in slightly -- `translateY(12px) scale(0.98)` at `opacity: 0.85` up to
+  its resting state -- driven by native CSS scroll-timeline (`animation-timeline:
+view()`), never a JS scroll listener. Reverses cleanly on scroll-up because
+  it is timeline-driven, not a one-shot entrance. Use the `.scroll-drift`
+  utility in `globals.css`. Content only, never the whole page or a background
+  layer. Browsers without `animation-timeline` support just see the resting
+  state -- no polyfill.
 - `prefers-reduced-motion` is handled globally in `globals.css`; do not
   reimplement it.
 
