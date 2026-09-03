@@ -1,38 +1,38 @@
 ---
 name: Sautter
-description: A Mayfair cigar merchant's site, built as if you're standing inside its cedar-lined humidor room.
+description: A Mayfair cigar merchant's site, built as a darkroom where every product is a print still developing under amber safelight.
 colors:
-  canvas: '#171009'
-  surface: '#251a10'
-  sunken: '#120c07'
-  ink: '#f2e8da'
-  ink-muted: '#c2ad9b'
-  ink-faint: '#85715e'
-  line: '#3c2c1e'
-  line-strong: '#5a4430'
-  accent: '#e0862c'
-  accent-hover: '#f2a04a'
-  accent-ink: '#1c1108'
-  accent-wash: '#3a2412'
+  canvas: '#0c0908'
+  surface: '#171009'
+  sunken: '#0a0705'
+  ink: '#ece6d9'
+  ink-muted: '#a99a86'
+  ink-faint: '#6e6153'
+  line: '#2c2118'
+  line-strong: '#473424'
+  accent: '#c9541f'
+  accent-hover: '#e37a3f'
+  accent-ink: '#180b04'
+  accent-wash: '#33190c'
   danger: '#d9483a'
   danger-wash: '#2c1712'
-  band-gold: '#a9843f'
-  band-oxblood: '#7a3326'
-  band-bottle: '#3c5240'
+  print-light: '#b7b0a3'
+  print-mid: '#86796a'
+  print-dark: '#4a4136'
 typography:
   display:
-    fontFamily: 'Playfair Display, Georgia, serif'
+    fontFamily: 'Fraunces, Georgia, serif'
     fontSize: '2.5rem (mobile) / 3.5rem hero (desktop)'
     fontWeight: 600
     lineHeight: 1.1
     letterSpacing: '-0.02em'
   body:
-    fontFamily: 'Inter, system-ui, sans-serif'
+    fontFamily: 'Archivo Narrow, system-ui, sans-serif'
     fontSize: '1rem'
     fontWeight: 400
     lineHeight: 1.65
   label:
-    fontFamily: 'Inter, system-ui, sans-serif'
+    fontFamily: 'Archivo Narrow, system-ui, sans-serif'
     fontSize: '0.8125rem'
     fontWeight: 500
     letterSpacing: 'wide, uppercase'
@@ -69,61 +69,66 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Humidor Room"**
+**Creative North Star: "The Darkroom Archive"**
 
-The site is built as if a regular has walked into Sautter's own humidor room at
-the back of the Mount Street shop: dim, warm-lit, cedar and leather, a single
-foil-orange band catching the light on the shelf. It is not a dark-mode
-reskin of a light site — it is the one identity the brand has, and it does
-not lighten because a visitor's phone is set to light. The palette borrows
-directly from the product's own material world: lacquered near-black rather
-than a pure `#000` void, cedar-brown drawers for cards rather than glass
-tiles, and the gilt-orange of a real cigar band as the single accent, spent
-like foil rather than paint.
+Sautter's site is a darkroom, not a dashboard: every product photo is a print
+still emerging from the developer tray under amber safelight, never a static
+icon sitting inert on the page. The near-black ground carries a warm amber
+wash from above -- an ambient light source, not a flat accent color -- and
+that same amber governs every interactive surface: buttons, taps, and hovers
+all give real, visible feedback, because this world's entire identity is
+built on something visibly changing state in front of the visitor.
 
-Confirmed visual rejections: no gradient-and-glass "AI startup" look, no
-neon-glow-on-black cliché (the accent is warm brass-orange, never a signal
-color), no kicker/eyebrow labels sitting above headings, no white cards
-floating on the dark ground.
+This is the second visual world this project has shipped. The first ("The
+Humidor Room" -- lacquered near-black, cedar-brown surfaces, gilt-orange
+accent used as flat decoration) was explicitly rejected by the client as too
+generic. The darkroom archive won a three-direction round against a private
+members' club and a rare-book room specifically because it carries a real
+interaction metaphor -- developing -- rather than only a palette.
+
+Confirmed visual rejections: a flat "dark mode plus one accent" treatment
+where the accent never moves or does anything; a glowing neon accent (this
+amber is matte and warm, like a lamp, never a signal color); kicker/eyebrow
+labels above headings; scattered, purposeless hover animation.
 
 **Key Characteristics:**
 
-- Lacquered near-black canvas, cedar-brown surfaces, one gilt-orange accent
-- Warm ivory text, never stark white; warm near-black text-on-accent, never white
-- Hairline-divided lists in place of repeated same-size cards
-- Each product carries its own colored "band" graphic so items read apart at a glance
-- Serif display type (kept from the incumbent system) for headlines; sans for everything functional
+- Near-black canvas washed in ambient amber light from above, not a flat accent
+- Every product image is a "print" with a perpetual slow-developing sweep, quickening on interaction
+- Real tap/press feedback on every button and card via the `motion` library, not just a color swap
+- One authored page-entrance (the cigar detail hero) that "develops into view" as a staggered reveal
+- Fraunces (soft, hand-set display serif) paired with Archivo Narrow (equipment-label sans) for everything functional
 
 ## Colors
 
-A lacquered, warm-dark palette: one near-black ground, one warm cedar surface tone, and exactly one accent, used the way foil is used on a cigar band.
+A near-black ground under one ambient amber wash, with wet-print silver-gray reserved for photographic surfaces only.
 
 ### Primary
 
-- **Gilt-orange foil** (`#e0862c`): the one accent. Primary buttons, links, focus rings, active filter states. Roughly one accent element per viewport — it marks the thing to act on, never decorates.
+- **Amber safelight** (`#c9541f`): the one accent, and the site's one light source (see the `body` background wash in `globals.css`). Primary buttons, links, focus rings, the developing-print sweep. Brightens toward `#e37a3f` on hover -- reads as the lamp turned up, not a state color swap.
 
 ### Neutral
 
-- **Lacquer black** (`#171009`): page background. Warm brown-black, not pure `#000`.
-- **Cedar drawer** (`#251a10`): cards, panels, the sticky header — a drawer pulled from the humidor, always sitting one shade lighter than canvas.
-- **Deep recess** (`#120c07`): wells, inputs, anything sunken below the surface plane.
-- **Warm ivory** (`#f2e8da`): primary text. Never stark white.
-- **Tobacco tan** (`#c2ad9b`): secondary text, captions, muted copy.
-- **Faint brass** (`#85715e`): placeholders, disabled states, the faintest label text.
-- **Brass hairline** (`#3c2c1e`) / **strong hairline** (`#5a4430`): all borders. One weight (1px) everywhere; "strong" only for hover states.
+- **Darkroom black** (`#0c0908`): page background, warmed by the amber wash above it.
+- **Print surface** (`#171009`): cards, panels, trays -- one shade lighter than canvas.
+- **Deep recess** (`#0a0705`): wells, inputs.
+- **Enamel white** (`#ece6d9`): primary text. Never stark white.
+- **Faded print** (`#a99a86`): secondary text, captions.
+- **Spent fixer** (`#6e6153`): placeholders, disabled states.
+- **Amber-warmed hairline** (`#2c2118`) / **strong hairline** (`#473424`): all borders.
 
 ### Named Rules
 
-**The One Foil Rule.** The accent is spent once per viewport — the primary action, or a link, or a highlighted stat — never on more than one of those at once. A price, a badge, and a button do not all get to be orange on the same screen.
+**The One Light Source Rule.** The amber wash on `body` is the scene's only ambient light. No second background gradient exists anywhere else on the site -- every other surface sits flat under that one light, the way objects in a real room don't each glow independently.
 
-**The No-Neon Rule.** On a near-black ground, the reflex is a glowing neon accent. Sautter's accent is matte foil-orange with no glow, blur, or drop-shadow of its own color — it looks lit by a lamp, not lit from within.
+**The No-Neon Rule.** The accent is matte, warm amber with no glow, blur, or self-colored drop-shadow -- it looks lit by a safelight bulb, not lit from within a UI element.
 
 ## Typography
 
-**Display Font:** Playfair Display (with Georgia, Times New Roman fallback)
-**Body Font:** Inter (with system-ui fallback)
+**Display Font:** Fraunces (with Georgia, Times New Roman fallback)
+**Body Font:** Archivo Narrow (with system-ui fallback)
 
-**Character:** A confident serif for names and headlines (the same one the incumbent site already used — it belongs in this room), paired with a plain, quiet sans for everything functional. Two weights only: normal and medium.
+**Character:** A soft, slightly idiosyncratic serif for names and headlines against a condensed, equipment-label sans for everything functional -- captions, data, timer-like labels. The pairing reads like a handwritten darkroom log next to the printed markings on the equipment itself.
 
 ### Hierarchy
 
@@ -132,72 +137,70 @@ A lacquered, warm-dark palette: one near-black ground, one warm cedar surface to
 - **Title** (600, 1.5rem, 1.3 line-height): section headings, stat values.
 - **Lead** (400, 1.1875rem, 1.6 line-height): the one supporting paragraph under a page's `<h1>`.
 - **Body** (400, 1rem, 1.65 line-height): running copy, measure-capped at ~44rem.
-- **Caption** (500, 0.8125rem, uppercase, tracking-wide): field labels and stat labels only.
+- **Caption** (500, 0.8125rem, uppercase, tracking-wide): field labels and stat labels only -- also the floor of the type scale; nothing renders smaller (no arbitrary sub-caption sizes).
 
 ### Named Rules
 
-**The No-Kicker Rule.** No caption-label sits above a heading as a kicker or eyebrow. The heading carries its own weight; anything that needs saying goes in the heading itself or the paragraph beneath it.
+**The No-Kicker Rule.** No caption-label sits above a heading as a kicker or eyebrow. The heading carries its own weight.
 
 ## Layout
 
-Mobile-first; layouts stack by default and widen at `sm:`/`md:`. Every section sits inside a `Container` (72rem max width) or `Container measure` (44rem, for running prose). Vertical rhythm comes from a fixed 4px-multiple scale (2/3/4/6/8/10/12/16/20/24/32) — nothing else. Section padding is `py-24` desktop / `py-16` mobile; related items sit at `gap-4`, distinct groups at `gap-10`+. On the cigars listing, the filter panel collapses behind a toggle below `md:` so the first product is reachable without scrolling past every filter.
+Mobile-first; layouts stack by default and widen at `sm:`/`md:`. Every section sits inside a `Container` (72rem max width) or `Container measure` (44rem, for running prose). Vertical rhythm comes from a fixed 4px-multiple scale -- nothing else. Section padding is `py-24` desktop / `py-16` mobile. On the cigars listing, the filter panel collapses behind a toggle below `md:` so the first product is reachable without scrolling past every filter.
 
 ## Elevation & Depth
 
-Flat by default; the little elevation that exists reads as a cedar panel catching a sliver of warm light on its top edge, not a black shadow on a black ground (which would simply vanish). Depth comes from surface-tone contrast (cedar surface against near-black canvas) more than from shadow.
+Flat by default; what little elevation exists reads as a print catching a sliver of warm light at its top edge, not a black shadow on a black ground (which would vanish). Depth comes primarily from surface-tone contrast against the ambient amber wash, not from shadow.
 
 ### Shadow Vocabulary
 
-- **Raise** (`0 1px 0 0 rgb(255 200 140 / 0.05) inset, 0 2px 8px rgb(0 0 0 / 0.45)`): resting cards and panels.
-- **Float** (`0 1px 0 0 rgb(255 200 140 / 0.08) inset, 0 16px 40px rgb(0 0 0 / 0.6)`): menus, dialogs, anything that overlays the page.
+- **Raise** (`0 1px 0 0 rgb(255 180 120 / 0.05) inset, 0 2px 8px rgb(0 0 0 / 0.5)`): resting cards and panels.
+- **Float** (`0 1px 0 0 rgb(255 180 120 / 0.08) inset, 0 16px 40px rgb(0 0 0 / 0.65)`): menus, dialogs, anything that overlays the page.
 
 ## Shapes
 
-Three radii only: `control` (0.5rem, buttons/inputs), `card` (0.875rem), `panel` (1.25rem, the largest surfaces — the cigar hero image). One hairline border weight everywhere. No hard-edged neobrutalist shadows, no clip-path silhouettes.
+Three radii only: `control` (0.5rem), `card` (0.875rem), `panel` (1.25rem, the cigar hero image). One hairline border weight everywhere.
 
 ## Components
 
 ### Buttons
 
 - **Shape:** `rounded-control` (0.5rem).
-- **Primary:** gilt-orange fill (`#e0862c`), near-black ink text (`#1c1108`) — engraved-on-foil, never white-on-orange.
-- **Secondary:** cedar-surface fill, ivory text, hairline border.
-- **Ghost:** transparent, muted ivory text, cedar-surface fill on hover.
-- **Hover:** background brightens toward `accent-hover` (`#f2a04a`) — reads as catching more light, not as a state color swap.
+- **Primary:** amber fill (`#c9541f`), near-black ink text (`#180b04`) -- never white-on-amber.
+- **Feedback:** real press/hover via `motion` -- `whileTap={{ scale: 0.97 }}`, hover brightens toward `accent-hover`. Not a CSS color transition; a physical press.
 
 ### Cards / Containers
 
 - **Corner:** `rounded-card` (0.875rem).
-- **Background:** cedar surface (`#251a10`) on lacquer-black canvas — never a floating white card.
-- **Border:** one hairline (`border-line`).
-- **Internal padding:** `p-6`.
-- Prefer a single hairline-divided list over N repeated same-size cards (see the homepage highlights and a cigar's stat strip) — a card grid is the fallback, not the default.
+- **Background:** print-surface tone on darkroom-black canvas -- never a floating white card.
+- **Interaction:** the `CigarCard` lifts (`whileHover={{ y: -2 }}`) and presses (`whileTap={{ scale: 0.98 }}`) as a whole -- clicking into a product should feel like picking something up, not just following a link.
+- Prefer a single hairline-divided list over N repeated same-size cards.
 
 ### Inputs / Fields
 
-- **Style:** cedar-surface background, hairline border, ivory text, faint-brass placeholder text.
-- **Focus:** the one global focus ring (2px accent outline, 2px offset) — never a custom per-input treatment.
+- **Style:** print-surface background, hairline border, enamel-white text.
+- **Focus:** the one global focus ring (2px accent outline, 2px offset).
 
-### Navigation
+### The Developing Print (signature component)
 
-- Sticky header, cedar-surface background at 80% opacity with backdrop blur. Wordmark in accent orange. Nav items in ivory with a cedar-surface hover fill.
+The per-product identity device in place of real photography: a surface carrying `.developing` (`globals.css`) -- a slow amber sweep at rest (6s cycle), quickening to 2.4s on hover/focus via `.developing-active` or a `.group:hover` ancestor. A faint monogram (the brand's initials, toned from `print-light` / `print-mid` / `print-dark`, deterministically chosen from the brand name) sits over the print so products read apart from each other. This is the site's one ambient/idle animation; nothing else on the page animates without user interaction.
 
-### Cigar Band (signature component)
+### Cigar Hero Entrance (signature interaction)
 
-The one piece of per-product identity the site has without real photography. A cigar illustrated in outline (`text-ink-faint`, `currentColor` strokes) wears a colored paper band — one of three tobacco-world tones (`band-gold`, `band-oxblood`, `band-bottle`, deterministically chosen from the brand name) — carrying the brand's initials in serif type. This exists specifically so products read apart from each other at a glance; when real product photography arrives, it retires in favor of that, but the per-product color-coding idea is worth carrying forward into whatever replaces it.
+The cigar detail page's hero -- print, meta line, name, summary, add-to-cart, stat strip -- reveals as one `motion`-orchestrated staggered sequence on mount (~60ms between children, fade + 14px rise). This is the _one_ authored page-entrance in the system; do not add a second one elsewhere on the same page, and do not add page-entrance animation to other pages without a comparable reason.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** keep the accent to roughly one element per viewport (`The One Foil Rule`).
-- **Do** use the cigar band's brand-derived color coding as the model for any future per-product visual distinction.
-- **Do** prefer a hairline-divided list to a row of identical cards.
-- **Do** treat this palette as the site's only identity — no `prefers-color-scheme` branch, no `dark:` variant.
+- **Do** keep the amber wash as the only background gradient on the site (`The One Light Source Rule`).
+- **Do** give every clickable control real `motion` press/hover feedback, not just a CSS color swap.
+- **Do** use the developing-print monogram's brand-derived tone as the model for any future per-product visual distinction.
+- **Do** treat this palette as the site's only identity -- no `prefers-color-scheme` branch, no `dark:` variant.
 
 ### Don't:
 
-- **Don't** use pure `#000` or pure `#fff` anywhere — always the warm near-black / warm ivory pair.
+- **Don't** use pure `#000` or pure `#fff` anywhere -- always the warm near-black / warm enamel-white pair.
 - **Don't** put a caption-style kicker above a heading (`The No-Kicker Rule`).
-- **Don't** give any element a glowing/neon drop-shadow in the accent color (`The No-Neon Rule`).
-- **Don't** use a band tone (`band-gold` / `band-oxblood` / `band-bottle`) as general UI color — they exist only for per-cigar identity.
+- **Don't** give any element a second, independently-glowing accent shadow (`The No-Neon Rule`).
+- **Don't** use a print tone (`print-light` / `print-mid` / `print-dark`) as general UI color.
+- **Don't** write an arbitrary `text-[...]` size smaller than `text-caption` -- it's the floor of the scale.

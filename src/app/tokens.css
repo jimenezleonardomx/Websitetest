@@ -11,42 +11,41 @@
  * ------------------------------------------------------------------------ */
 
 @theme {
-  /* -- Color: the humidor room -- lacquered near-black, cedar-brown
-   * surfaces, one gilt-orange accent used like foil on a cigar band.
-   * This is the brand's one committed identity, not an OS-triggered dark
-   * mode -- a regular's own humidor room doesn't get lighter because their
-   * phone is in light mode. See project-ui SKILL.md. -------------------- */
-  --color-canvas: #171009; /* page background -- lacquered near-black, not pure #000 */
-  --color-surface: #251a10; /* cards, panels -- a cedar drawer pulled from the humidor */
-  --color-sunken: #120c07; /* wells, inputs -- deeper recess than canvas */
+  /* -- Color: the darkroom archive -- near-black under an amber safelight
+   * wash, wet-print silver for photographic surfaces, enamel-tray white for
+   * trim. This is the brand's one committed identity, not an OS-triggered
+   * dark mode. See project-ui SKILL.md. ----------------------------------- */
+  --color-canvas: #0c0908; /* page background -- near-black, warmed by the safelight */
+  --color-surface: #171009; /* trays, cards -- a print surface under amber light */
+  --color-sunken: #0a0705; /* wells, inputs -- deeper recess than canvas */
 
-  --color-ink: #f2e8da; /* primary text -- warm ivory, never stark white */
-  --color-ink-muted: #c2ad9b; /* secondary text, captions */
-  --color-ink-faint: #85715e; /* placeholders, disabled */
+  --color-ink: #ece6d9; /* primary text -- warm enamel-white, never stark white */
+  --color-ink-muted: #a99a86; /* secondary text, captions */
+  --color-ink-faint: #6e6153; /* placeholders, disabled */
 
-  --color-line: #3c2c1e; /* hairlines, borders -- dim brass-brown */
-  --color-line-strong: #5a4430;
+  --color-line: #2c2118; /* hairlines, borders -- dim, warmed by the safelight */
+  --color-line-strong: #473424;
 
-  --color-accent: #e0862c; /* gilt-orange foil -- actions, focus, links */
-  --color-accent-hover: #f2a04a; /* catches more light on hover */
-  --color-accent-ink: #1c1108; /* text on accent -- engraved-ink-on-foil, never white */
-  --color-accent-wash: #3a2412; /* accent-tinted backgrounds */
+  --color-accent: #c9541f; /* amber safelight -- actions, focus, links */
+  --color-accent-hover: #e37a3f; /* brightens, like the lamp turned up */
+  --color-accent-ink: #180b04; /* text on accent -- never white */
+  --color-accent-wash: #33190c; /* accent-tinted backgrounds */
 
   --color-danger: #d9483a;
   --color-danger-wash: #2c1712;
 
-  /* Per-product band tones -- real cigar bands and box labels have used
-   * gold, oxblood and bottle-green for well over a century. Used only for
-   * the per-cigar band graphic (CigarBand), never as a general UI color. */
-  --color-band-gold: #a9843f;
-  --color-band-oxblood: #7a3326;
-  --color-band-bottle: #3c5240;
+  /* Per-product tones -- three silver-gray grades a print can develop to,
+   * used only by the CigarPlaceholderImage "print" graphic, never as
+   * general UI color. */
+  --color-print-light: #b7b0a3;
+  --color-print-mid: #86796a;
+  --color-print-dark: #4a4136;
 
   /* -- Type -------------------------------------------------------------- */
   --font-sans:
-    var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    var(--font-archivo-narrow), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-serif: var(--font-playfair-display), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   --text-caption: 0.8125rem;
@@ -69,12 +68,14 @@
   --radius-card: 0.875rem;
   --radius-panel: 1.25rem;
 
-  /* -- Elevation: a cedar panel catching a little warm light on its top
-   * edge, not a black shadow on a black ground (which would vanish). ----- */
-  --shadow-raise: 0 1px 0 0 rgb(255 200 140 / 0.05) inset, 0 2px 8px rgb(0 0 0 / 0.45);
-  --shadow-float: 0 1px 0 0 rgb(255 200 140 / 0.08) inset, 0 16px 40px rgb(0 0 0 / 0.6);
+  /* -- Elevation: a print catching a little warm light at its top edge,
+   * not a black shadow on a black ground (which would vanish). ----------- */
+  --shadow-raise: 0 1px 0 0 rgb(255 180 120 / 0.05) inset, 0 2px 8px rgb(0 0 0 / 0.5);
+  --shadow-float: 0 1px 0 0 rgb(255 180 120 / 0.08) inset, 0 16px 40px rgb(0 0 0 / 0.65);
 
-  /* -- Motion: one duration set, one easing. Nothing bounces. ------------ */
+  /* -- Motion: one duration set, one easing, for ordinary transitions.
+   * The signature "developing" motion has its own timing -- see globals.css
+   * and project-ui SKILL.md. ---------------------------------------------- */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 120ms;
   --duration-base: 200ms;

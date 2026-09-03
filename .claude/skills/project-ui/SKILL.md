@@ -13,14 +13,16 @@ machine says something different, follow this file.
 
 ## The look, in one paragraph
 
-The humidor room. A lacquered near-black ground rather than pure `#000`, warm
-ivory text rather than stark white, cedar-brown panels for cards, and one
-gilt-orange accent used the way foil is used on a cigar band -- sparingly, on
-the thing that matters. This is the site's one committed identity, not an
-OS-triggered dark mode: it does not lighten because a visitor's phone is set
-to light. Generous vertical space, restrained horizontal decoration.
-Typography carries the hierarchy; borders and shadows barely whisper. It
-should read like standing in the room, not like a dashboard.
+The darkroom archive. A near-black ground washed in warm amber safelight
+rather than a flat accent color, wet-print silver-gray for photographic
+surfaces, enamel-tray white for trim. This is the site's one committed
+identity, not an OS-triggered dark mode: it does not lighten because a
+visitor's phone is set to light. Every product image is a print that never
+quite finishes developing -- a slow amber sweep at rest, quickening on
+interaction -- and buttons give real tactile feedback, because this world's
+whole identity is about something changing state in front of you. Generous
+vertical space, restrained horizontal decoration otherwise. It should read
+like a darkroom, not a dashboard.
 
 ## Pre-flight -- run through this before writing code
 
@@ -36,12 +38,18 @@ should read like standing in the room, not like a dashboard.
 - Only token utilities: `bg-canvas`, `bg-surface`, `bg-sunken`, `text-ink`,
   `text-ink-muted`, `text-ink-faint`, `border-line`, `border-line-strong`,
   `bg-accent`, `text-accent`, `bg-accent-wash`, `text-danger`.
-- `text-band-gold`, `text-band-oxblood`, `text-band-bottle` exist for exactly
-  one purpose: the per-cigar band graphic (`cigar-placeholder-image.tsx`) that
-  tells products apart. Never use a band tone as general UI color.
+- `text-print-light`, `text-print-mid`, `text-print-dark` exist for exactly
+  one purpose: the per-cigar "print" graphic (`cigar-placeholder-image.tsx`)
+  that tells products apart. Never use a print tone as general UI color.
+- The amber wash on `body` (see `globals.css`) is the site's one ambient
+  light source. Do not add a second background gradient anywhere else --
+  everything else sits flat on top of it.
 - **The accent is a budget, not a paint.** Roughly one accent element per
   viewport: the primary action, or a link, or a highlighted stat. Not all three.
-- Never a gradient as decoration. Never a colored drop shadow.
+- Never a second gradient beyond the one safelight wash on `body` -- no
+  gradient text, gradient buttons, or gradient borders. Never a colored drop
+  shadow (the `.developing` sweep is the one sanctioned exception, and it
+  lives only on product imagery).
 - There is no dark mode to toggle -- this palette _is_ the site, always. If
   something looks wrong, fix the token in `tokens.css`, never branch on
   `prefers-color-scheme` or write a `dark:` variant.
@@ -84,21 +92,40 @@ uppercase tracking-wide` is for field/data labels only (a stat's caption,
 
 ### Motion
 
-- `transition-colors duration-150 ease-out-soft` for hover and focus. That is
-  the default and it covers most cases.
-- Entrances only where something genuinely appears (dialog, toast, popover),
-  or the one scroll-drift pattern below. No other scroll-triggered reveals, no
-  parallax on background/decorative layers, no bouncing easings.
-- **Scroll drift (the one allowed scroll-linked effect):** a card or image may
-  settle in slightly -- `translateY(12px) scale(0.98)` at `opacity: 0.85` up to
-  its resting state -- driven by native CSS scroll-timeline (`animation-timeline:
-view()`), never a JS scroll listener. Reverses cleanly on scroll-up because
-  it is timeline-driven, not a one-shot entrance. Use the `.scroll-drift`
-  utility in `globals.css`. Content only, never the whole page or a background
-  layer. Browsers without `animation-timeline` support just see the resting
-  state -- no polyfill.
-- `prefers-reduced-motion` is handled globally in `globals.css`; do not
-  reimplement it.
+This world's identity is built on things visibly changing state -- a print
+developing, a shutter pressed -- so it earns a wider motion vocabulary than a
+typical quiet site. That is still a fixed, named vocabulary, not a license to
+animate everything: every element gets one of the patterns below, never an
+invented one-off.
+
+- `transition-colors duration-150 ease-out-soft` for ordinary hover and focus
+  that doesn't fit a pattern below.
+- **Developing (the signature ambient motion):** every product image carries
+  `.developing` -- a slow amber sweep at rest (6s), quickening to 2.4s via
+  `.developing-active` on hover/focus. Defined once in `globals.css`. Never
+  hand-roll a second sweep animation; extend this one.
+- **Tap feedback:** interactive controls (`Button`, cards, quantity steppers)
+  use the `motion` library for press/hover feedback -- a small scale-down on
+  press (`whileTap={{ scale: 0.97 }}`), a brightness/glow shift on hover taken
+  from `accent-hover`. This replaces plain CSS for anything the visitor
+  clicks or taps; CSS `transition-colors` still covers passive hover (links,
+  nav items).
+- **Entrance (page-level, once per page):** the cigar detail page's hero
+  content (print graphic, name, price strip) reveals as one staggered
+  sequence on mount via `motion` -- fade + slight rise, ~60ms stagger between
+  children. This is the _one_ authored entrance per page; do not add a
+  second staggered reveal elsewhere on the same page.
+- **Scroll drift (the one scroll-linked effect):** a card or image may settle
+  in slightly -- `translateY(12px) scale(0.98)` at `opacity: 0.85` up to its
+  resting state -- driven by native CSS scroll-timeline (`animation-timeline:
+view()`), never a JS scroll listener. Use the `.scroll-drift` utility in
+  `globals.css`. Content only, never the whole page or a background layer.
+  Browsers without `animation-timeline` support just see the resting state.
+- No parallax on background/decorative layers, no bouncing easings, no motion
+  invented outside the patterns above.
+- `prefers-reduced-motion` is handled globally in `globals.css` for CSS
+  animations; `motion`-driven components must also respect it (check
+  `useReducedMotion()` before a whileTap/entrance animation plays).
 
 ### Components and accessibility
 

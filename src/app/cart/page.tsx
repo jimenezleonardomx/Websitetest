@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
+import { QuantityStepper } from '@/components/ui/quantity-stepper'
 import { useCart } from '@/lib/cart-context'
 
 export default function CartPage() {
@@ -40,25 +41,13 @@ export default function CartPage() {
                     <p className="text-caption text-ink-muted mt-1">{item.price} each</p>
                   </div>
                   <div className="flex items-center justify-between gap-4 sm:justify-end">
-                    <div className="border-line rounded-control flex items-center border">
-                      <button
-                        type="button"
-                        onClick={() => setQuantity(item.cigarSlug, item.quantity - 1)}
-                        className="text-ink-muted hover:text-ink flex h-10 w-10 items-center justify-center text-lg"
-                        aria-label={`Decrease quantity of ${item.name}`}
-                      >
-                        −
-                      </button>
-                      <span className="text-body text-ink w-8 text-center">{item.quantity}</span>
-                      <button
-                        type="button"
-                        onClick={() => setQuantity(item.cigarSlug, item.quantity + 1)}
-                        className="text-ink-muted hover:text-ink flex h-10 w-10 items-center justify-center text-lg"
-                        aria-label={`Increase quantity of ${item.name}`}
-                      >
-                        +
-                      </button>
-                    </div>
+                    <QuantityStepper
+                      quantity={item.quantity}
+                      onDecrease={() => setQuantity(item.cigarSlug, item.quantity - 1)}
+                      onIncrease={() => setQuantity(item.cigarSlug, item.quantity + 1)}
+                      decreaseLabel={`Decrease quantity of ${item.name}`}
+                      increaseLabel={`Increase quantity of ${item.name}`}
+                    />
                     <p className="text-body text-ink w-16 text-right font-medium">
                       £{(item.priceValue * item.quantity).toFixed(0)}
                     </p>

@@ -1,19 +1,20 @@
 import type { Metadata } from 'next'
-import { Inter, Playfair_Display } from 'next/font/google'
+import { Archivo_Narrow, Fraunces } from 'next/font/google'
 import { SiteHeader } from '@/components/site-header'
 import { CartProvider } from '@/lib/cart-context'
 import './globals.css'
 
-const inter = Inter({
+const archivoNarrow = Archivo_Narrow({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
-  variable: '--font-inter',
+  weight: ['400', '500', '600'],
+  variable: '--font-archivo-narrow',
 })
 
-const playfairDisplay = Playfair_Display({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
-  variable: '--font-playfair-display',
+  weight: ['500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
 })
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfairDisplay.variable}`}>
+    <html lang="en" className={`${archivoNarrow.variable} ${fraunces.variable}`}>
       <body>
         <CartProvider>
           <SiteHeader />

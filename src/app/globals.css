@@ -9,7 +9,15 @@
   }
 
   body {
-    background-color: var(--color-canvas);
+    /* The safelight wash -- an ambient light source, not a flat accent. */
+    background:
+      radial-gradient(
+        ellipse 1200px 720px at 50% -8%,
+        color-mix(in srgb, var(--color-accent) 20%, transparent),
+        transparent 60%
+      ),
+      var(--color-canvas);
+    background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -65,4 +73,51 @@
     animation-timeline: view();
     animation-range: entry 0% cover 40%;
   }
+}
+
+/*
+ * Developing -- the signature motion of the darkroom world. An amber sweep
+ * drifts across a print surface, slow and ambient at rest, and CigarCard
+ * quickens it on hover via the .developing-active modifier. This is the one
+ * ambient/idle animation the site allows -- see project-ui SKILL.md.
+ */
+@keyframes developing-sweep {
+  0% {
+    background-position: 130% 0%;
+    opacity: 0.9;
+  }
+  50% {
+    background-position: -30% 100%;
+    opacity: 0.45;
+  }
+  100% {
+    background-position: 130% 0%;
+    opacity: 0.9;
+  }
+}
+
+.developing {
+  position: relative;
+  overflow: hidden;
+}
+
+.developing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    color-mix(in srgb, var(--color-accent) 55%, transparent) 50%,
+    transparent 60%
+  );
+  background-size: 250% 250%;
+  animation: developing-sweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.developing-active::after,
+.group:hover .developing::after,
+.group:focus-visible .developing::after {
+  animation-duration: 2.4s;
 }

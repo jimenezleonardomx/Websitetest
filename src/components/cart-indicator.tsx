@@ -24,7 +24,7 @@ export function CartIndicator() {
         <circle cx="14.5" cy="17.5" r="1.1" fill="currentColor" />
       </svg>
       {count > 0 && (
-        <span className="bg-accent text-accent-ink absolute top-1 right-1 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[0.625rem] leading-none font-medium">
+        <span className="bg-accent text-accent-ink text-caption absolute top-0.5 right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 leading-none font-medium">
           {count}
         </span>
       )}

@@ -91,7 +91,7 @@ export function CigarsBrowser({ cigars }: { cigars: Cigar[] }) {
         >
           {filtersOpen ? 'Hide filters' : 'Filters'}
           {activeFilterCount > 0 && (
-            <span className="bg-accent text-accent-ink rounded-full px-1.5 py-0.5 text-[0.6875rem] leading-none">
+            <span className="bg-accent text-accent-ink text-caption rounded-full px-1.5 py-0.5 leading-none">
               {activeFilterCount}
             </span>
           )}
