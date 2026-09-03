@@ -11,29 +11,31 @@
  * ------------------------------------------------------------------------ */
 
 @theme {
-  /* -- Color: warm neutral ground, one accent. ---------------------------- */
-  --color-canvas: #faf9f6; /* page background */
-  --color-surface: #ffffff; /* cards, raised panels */
-  --color-sunken: #f2f0ea; /* wells, inputs, code blocks */
+  /* -- Color: warm tobacconist palette, one burnt-orange accent. ---------- */
+  --color-canvas: #fbf6ee; /* page background -- warm parchment */
+  --color-surface: #fffdf9; /* cards, raised panels */
+  --color-sunken: #f3ebdd; /* wells, inputs, code blocks */
 
-  --color-ink: #1a1917; /* primary text */
-  --color-ink-muted: #6b6960; /* secondary text, captions */
-  --color-ink-faint: #9c9a91; /* placeholders, disabled */
+  --color-ink: #2b1d14; /* primary text -- warm near-black */
+  --color-ink-muted: #75655a; /* secondary text, captions */
+  --color-ink-faint: #a8988b; /* placeholders, disabled */
 
-  --color-line: #e5e2da; /* hairlines, borders */
-  --color-line-strong: #d2cec2;
+  --color-line: #e8dccb; /* hairlines, borders */
+  --color-line-strong: #d8c5aa;
 
-  --color-accent: #1f6f5c; /* brand green -- actions, focus, links */
-  --color-accent-hover: #195a4b;
+  --color-accent: #c1541a; /* burnt orange -- actions, focus, links */
+  --color-accent-hover: #a3450f;
   --color-accent-ink: #ffffff; /* text on accent */
-  --color-accent-wash: #e8f1ee; /* accent-tinted backgrounds */
+  --color-accent-wash: #fbe4d2; /* accent-tinted backgrounds */
 
   --color-danger: #b4321f;
   --color-danger-wash: #fbecea;
 
   /* -- Type -------------------------------------------------------------- */
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-serif: var(--font-playfair-display), ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   --text-caption: 0.8125rem;
@@ -73,21 +75,21 @@
 /* Dark mode overrides the token values only. No component knows about this. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-canvas: #14140f;
-    --color-surface: #1d1d18;
-    --color-sunken: #262620;
+    --color-canvas: #1c140d;
+    --color-surface: #241a11;
+    --color-sunken: #2e2117;
 
-    --color-ink: #f2f0e9;
-    --color-ink-muted: #a3a096;
-    --color-ink-faint: #6f6d65;
+    --color-ink: #f5ece1;
+    --color-ink-muted: #c2ad9b;
+    --color-ink-faint: #8a7663;
 
-    --color-line: #302f28;
-    --color-line-strong: #43423a;
+    --color-line: #3b2c1f;
+    --color-line-strong: #4f3b29;
 
-    --color-accent: #56b79c;
-    --color-accent-hover: #6cc7ae;
-    --color-accent-ink: #10241e;
-    --color-accent-wash: #1a2b26;
+    --color-accent: #ff8a3d;
+    --color-accent-hover: #ffa463;
+    --color-accent-ink: #241a11;
+    --color-accent-wash: #3a2617;
 
     --color-danger: #e2705c;
     --color-danger-wash: #2c1b18;
