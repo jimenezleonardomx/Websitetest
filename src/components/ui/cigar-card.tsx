@@ -8,22 +8,23 @@ export function CigarCard({ cigar, className }: { cigar: Cigar; className?: stri
     <Link
       href={`/cigars/${cigar.slug}`}
       className={cn(
-        'rounded-card border-line bg-surface shadow-raise hover:border-line-strong block overflow-hidden border',
-        'ease-out-soft transition-colors duration-150',
+        'rounded-card border-line bg-surface shadow-raise hover:border-line-strong hover:shadow-float block overflow-hidden border',
+        'ease-out-soft scroll-drift transition-[colors,box-shadow] duration-150',
         className
       )}
     >
       <CigarPlaceholderImage />
-      <div className="p-6">
-        <p className="text-caption text-ink-muted tracking-wide uppercase">{cigar.origin}</p>
-        <h3 className="text-title text-ink mt-2 font-serif">{cigar.name}</h3>
-        <p className="text-body text-ink-muted mt-2">{cigar.summary}</p>
-        <div className="text-caption text-ink-faint mt-4 flex gap-4">
-          <span>
-            {cigar.length} · {cigar.ringGauge} ring
+      <div className="p-8">
+        <p className="text-caption text-ink-faint tracking-wide uppercase">
+          {cigar.brand} · {cigar.origin}
+        </p>
+        <h3 className="text-title text-ink mt-3 font-serif">{cigar.name}</h3>
+        <p className="text-body text-ink-muted mt-3">{cigar.summary}</p>
+        <div className="border-line mt-6 flex items-center justify-between border-t pt-4">
+          <span className="text-caption text-ink-muted">
+            {cigar.length} · {cigar.ringGauge} ring · {cigar.strength}
           </span>
-          <span>{cigar.strength}</span>
-          <span className="text-accent font-medium">{cigar.price}</span>
+          <span className="text-body text-ink font-medium">{cigar.price}</span>
         </div>
       </div>
     </Link>

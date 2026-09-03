@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { CartIndicator } from '@/components/cart-indicator'
 import { Container } from '@/components/ui/container'
 import { NavMenu, type NavPage } from '@/components/ui/nav-menu'
 import { SautterWordmark } from '@/components/ui/sautter-wordmark'
@@ -17,7 +18,10 @@ export function SiteHeader() {
         <Link href="/" aria-label="Sautter, home">
           <SautterWordmark />
         </Link>
-        <NavMenu pages={PAGES} />
+        <div className="flex items-center gap-1">
+          <NavMenu pages={PAGES} />
+          <CartIndicator />
+        </div>
       </Container>
     </header>
   )

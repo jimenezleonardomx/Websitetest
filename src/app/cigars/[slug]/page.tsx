@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { AddToCart } from '@/components/add-to-cart'
 import { Card } from '@/components/ui/card'
 import { CigarPlaceholderImage } from '@/components/ui/cigar-placeholder-image'
 import { Container } from '@/components/ui/container'
@@ -37,6 +38,10 @@ export default async function CigarPage({ params }: { params: Promise<{ slug: st
         </p>
         <h1 className="text-display text-ink mt-4 font-serif">{cigar.name}</h1>
         <p className="text-lead text-ink-muted mt-4">{cigar.summary}</p>
+
+        <div className="mt-8">
+          <AddToCart cigar={cigar} />
+        </div>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <Card className="text-center">
