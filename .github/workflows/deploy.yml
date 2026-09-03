@@ -10,6 +10,14 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # `if:` cannot reference `secrets` directly (GitHub Actions restriction) --
+    # promoting to job-level env is the documented workaround, checked below
+    # via the `env` context instead.
+    env:
+      CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+      CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+      CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
+      CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -53,12 +61,7 @@ jobs:
       # + deploy in one action (confirmed by hand before automating this) --
       # so triggering it remotely is a single UAPI call.
       - name: Trigger cPanel deploy
-        if: ${{ secrets.CPANEL_HOST != '' }}
-        env:
-          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+        if: ${{ env.CPANEL_HOST != '' }}
         run: |
           set -e
           response=$(curl -sS -w '\n%{http_code}' \
@@ -78,6 +81,6 @@ jobs:
           fi
 
       - name: cPanel auto-deploy not configured
-        if: ${{ secrets.CPANEL_HOST == '' }}
+        if: ${{ env.CPANEL_HOST == '' }}
         run: |
           echo "::warning::Static export pushed to the deploy branch, but CPANEL_HOST is not set, so cPanel was not triggered. Click Deploy in cPanel's Git Version Control panel manually, or see docs/deploy.md to finish wiring this up."
