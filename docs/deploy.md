@@ -3,79 +3,76 @@
 See [ADR 0002](adr/0002-static-export-for-shared-hosting.md) for why this is a
 static export rather than a running Next.js server.
 
-`npm run build` produces a folder, `out/`, containing the entire site as plain
-files. Deploying is: upload the _contents_ of `out/` into `public_html` --
-never the `out` folder itself, its contents.
+**This site lives at `public_html/tabaco`, not the account's root
+`public_html`.** That directory is shared with several other live sites
+(`bife`, `garage`, `schedule`, and more) -- never delete or overwrite anything
+at the `public_html` root. Everything below is scoped to the `tabaco`
+subfolder only.
 
-Confirmed for this project: domain `tabaco.visualmarker.co.uk` points at
-`/home/sites/25a/8/8b5ff4250a/public_html`.
+Confirmed for this project:
 
-## One-time: get FTP/SFTP credentials
+- Domain: `tabaco.visualmarker.co.uk`
+- Document root: `/home/sites/25a/8/8b5ff4250a/public_html/tabaco`
 
-Smooth Hosting's control panel (cPanel or their own panel) has an
-**FTP Accounts** section. Create or find the account for this site and note:
+## How it works
 
-- Host (often `ftp.yourdomain.co.uk` or an IP -- the panel shows it)
-- Username
-- Password
-- Port (`21` for FTP, `22` for SFTP if offered -- prefer SFTP if available)
+There is no FTP involved. Deployment goes through cPanel's **Git™ Version
+Control** feature:
 
-Do not commit these anywhere. If you want me to hold them for scripted
-deploys, put them in `.env.local` under new `DEPLOY_*` keys (already
-gitignored) or as GitHub Actions secrets (see below) -- never in a tracked file.
+1. `npm run build` produces `out/` -- the entire site as static files.
+2. Those files get committed to a `deploy` branch in this repo. `deploy` is
+   **generated content only** -- always force-pushed, never edited by hand,
+   never merged into `main`.
+3. cPanel has a repository (named `website`) cloned at `public_html/tabaco`,
+   configured with **Deployment Branch: `deploy`**.
+4. Clicking **Deploy Repository** in that cPanel panel does a fetch + deploy
+   in one step -- it pulls the latest `deploy` branch and copies it into
+   `public_html/tabaco`. Confirmed working by hand on 2026-09-03.
 
-## Manual deploy (do this first, to confirm it works)
+`.github/workflows/deploy.yml` automates steps 1-2 on every push to `main`,
+and can also trigger step 4 via cPanel's API once the secrets below are set.
 
-1. `npm run build` -- creates `out/`
-2. Open an FTP/SFTP client (e.g. [FileZilla](https://filezilla-project.org/),
-   free, both of you should install it) and connect with the credentials above
-3. Navigate to `public_html` on the remote side
-4. Upload everything **inside** `out/` (not the `out` folder itself) into
-   `public_html`, overwriting existing files
-5. Visit `tabaco.visualmarker.co.uk` and confirm the new build is live
+## Manual deploy (the fallback, always works)
 
-Command-line alternative, if you'd rather script it (replace the placeholders):
+1. `npm run build`
+2. Push `out/` to the `deploy` branch (see the "Push static export to the
+   deploy branch" step in `deploy.yml` for the exact commands, or just let the
+   GitHub Action do it on push to `main`)
+3. In cPanel: **Git™ Version Control** -> `website` -> open it -> **Deploy
+   Repository**
+4. Visit `tabaco.visualmarker.co.uk` and confirm the new build is live
 
-```bash
-npm run build
-npx lftp -e "mirror -R out/ /home/sites/25a/8/8b5ff4250a/public_html --parallel=4; quit" \
-  -u "$FTP_USER,$FTP_PASSWORD" sftp://ftp.yourdomain.co.uk
-```
+## Automated deploy -- finishing the setup
 
-## Automated deploy on every push to main (recommended once the manual path works)
+The build-and-push-to-`deploy` half already runs on every push to `main`, no
+setup needed. The cPanel-trigger half needs four repo secrets (Settings ->
+Secrets and variables -> Actions -> New repository secret):
 
-Add a step to `.github/workflows/ci.yml` (or a separate workflow) using an
-FTP-deploy action, guarded by GitHub Actions secrets so credentials never touch
-the repo:
+| Secret             | Value                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `CPANEL_HOST`      | Your cPanel server hostname **with port**, e.g. `server123.smoothhosting.co.uk:2083` -- found in the URL bar while logged into cPanel |
+| `CPANEL_USERNAME`  | Your cPanel account username (not the FTP or email address -- the master login for the whole hosting account)                         |
+| `CPANEL_REPO_PATH` | `/home/sites/25a/8/8b5ff4250a/public_html/tabaco`                                                                                     |
+| `CPANEL_API_TOKEN` | Generate one in cPanel: **Security -> Manage API Tokens -> Create**                                                                   |
 
-```yaml
-deploy:
-  needs: check
-  if: github.ref == 'refs/heads/main'
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with: { node-version: 24, cache: npm }
-    - run: npm ci
-    - run: npm run build
-      env:
-        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
-    - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.SMOOTHHOSTING_FTP_HOST }}
-        username: ${{ secrets.SMOOTHHOSTING_FTP_USER }}
-        password: ${{ secrets.SMOOTHHOSTING_FTP_PASSWORD }}
-        local-dir: ./out/
-        server-dir: /public_html/
-```
+Also needed for the build step itself (same as before):
 
-Set the four secrets under repo Settings -> Secrets and variables -> Actions:
-`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`,
-`SMOOTHHOSTING_FTP_HOST`, `SMOOTHHOSTING_FTP_USER`,
-`SMOOTHHOSTING_FTP_PASSWORD`. Once that's in place, merging to `main` deploys
-automatically -- no one needs FileZilla for routine changes.
+| Secret                                 | Value             |
+| -------------------------------------- | ----------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | from `.env.local` |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | from `.env.local` |
+
+Until `CPANEL_HOST` is set, the workflow still builds and pushes `deploy`
+automatically -- it just posts a warning instead of failing, and you click
+**Deploy Repository** in cPanel by hand for that last step.
+
+**This part is less certain than everything else here.** The remote-trigger
+call uses cPanel's UAPI (`VersionControl` module, `deployment_create`
+function) -- confirmed to exist, but not exhaustively tested against Smooth
+Hosting's specific cPanel version. If the "Trigger cPanel deploy" step in
+Actions fails, the static export still made it to the `deploy` branch safely
+-- just click Deploy Repository manually and let me know what error came back
+so we can adjust the call.
 
 ## Checklist before every deploy
 
@@ -84,4 +81,4 @@ automatically -- no one needs FileZilla for routine changes.
       a Route Handler, or Server Action will fail the build here -- see
       [ADR 0002](adr/0002-static-export-for-shared-hosting.md))
 - [ ] `npm run serve` and click through the site locally against the real
-      `out/` output before uploading
+      `out/` output before deploying

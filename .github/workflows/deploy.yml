@@ -1,0 +1,83 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Format, lint, typecheck
+        run: npm run check
+
+      - name: Build static export
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+
+      # `deploy` is generated content only -- see docs/adr/0002 and
+      # docs/deploy.md. It is always force-pushed; never edit it by hand,
+      # never merge it into main.
+      - name: Push static export to the deploy branch
+        run: |
+          set -e
+          rm -rf /tmp/deploy-out
+          mkdir -p /tmp/deploy-out
+          cp -r out/. /tmp/deploy-out/
+          cd /tmp/deploy-out
+          echo "* -text" > .gitattributes
+          git init -q
+          git checkout -q -b deploy
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          git add -A
+          git commit -q -m "deploy: static export from ${{ github.sha }}"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin deploy
+
+      # cPanel's Git Version Control "Deploy Repository" button does a fetch
+      # + deploy in one action (confirmed by hand before automating this) --
+      # so triggering it remotely is a single UAPI call.
+      - name: Trigger cPanel deploy
+        if: ${{ secrets.CPANEL_HOST != '' }}
+        env:
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_REPO_PATH: ${{ secrets.CPANEL_REPO_PATH }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+        run: |
+          set -e
+          response=$(curl -sS -w '\n%{http_code}' \
+            -H "Authorization: cpanel ${CPANEL_USERNAME}:${CPANEL_API_TOKEN}" \
+            --data-urlencode "repository_root=${CPANEL_REPO_PATH}" \
+            "https://${CPANEL_HOST}/execute/VersionControl/deployment_create")
+          body=$(echo "$response" | sed '$d')
+          status=$(echo "$response" | tail -n1)
+          echo "$body"
+          if [ "$status" -ge 400 ]; then
+            echo "::error::cPanel returned HTTP $status -- see docs/deploy.md for the manual fallback"
+            exit 1
+          fi
+          if ! echo "$body" | grep -q '"status":1'; then
+            echo "::error::cPanel API reported failure -- see docs/deploy.md for the manual fallback"
+            exit 1
+          fi
+
+      - name: cPanel auto-deploy not configured
+        if: ${{ secrets.CPANEL_HOST == '' }}
+        run: |
+          echo "::warning::Static export pushed to the deploy branch, but CPANEL_HOST is not set, so cPanel was not triggered. Click Deploy in cPanel's Git Version Control panel manually, or see docs/deploy.md to finish wiring this up."
