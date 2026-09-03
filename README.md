@@ -1,8 +1,9 @@
 # Website
 
-Next.js + TypeScript + Tailwind v4, Supabase for data and auth, deployed to
-Cloudflare. Built by two people with Claude Code, so the conventions ship in the
-repo -- see [CLAUDE.md](CLAUDE.md).
+Next.js + TypeScript + Tailwind v4, static export, Supabase for data and auth
+(browser-side only -- see [ADR 0002](docs/adr/0002-static-export-for-shared-hosting.md)),
+deployed to Smooth Hosting. Built by two people with Claude Code, so the
+conventions ship in the repo -- see [CLAUDE.md](CLAUDE.md).
 
 ## Setup (5 minutes)
 
@@ -28,12 +29,19 @@ into `.env.local`.
 
 ## Scripts
 
-| Command          | Does                                             |
-| ---------------- | ------------------------------------------------ |
-| `npm run dev`    | dev server                                       |
-| `npm run check`  | format + lint + typecheck -- run before every PR |
-| `npm run build`  | production build                                 |
-| `npm run format` | rewrite files with Prettier                      |
+| Command          | Does                                                    |
+| ---------------- | ------------------------------------------------------- |
+| `npm run dev`    | dev server                                              |
+| `npm run check`  | format + lint + typecheck -- run before every PR        |
+| `npm run build`  | static export -> `out/`                                 |
+| `npm run serve`  | preview `out/` locally, the way the real host serves it |
+| `npm run format` | rewrite files with Prettier                             |
+
+## Deploying
+
+`out/` gets uploaded to Smooth Hosting's `public_html`. See
+[docs/deploy.md](docs/deploy.md) for the manual FTP steps and the optional
+GitHub Actions auto-deploy.
 
 ## Working on this together
 

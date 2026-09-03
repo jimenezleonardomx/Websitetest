@@ -12,7 +12,10 @@ building infrastructure.
 ## Decision
 
 - **Supabase** for Postgres, auth, storage and realtime.
-- **Cloudflare Pages/Workers** for hosting.
+- **Smooth Hosting** (shared hosting, static export) for hosting -- see
+  [ADR 0002](0002-static-export-for-shared-hosting.md), which supersedes the
+  original Cloudflare Pages/Workers choice below now that the domain and
+  hosting plan are fixed.
 - **Next.js (App Router) + TypeScript + Tailwind v4** for the app.
 - **GitHub** with protected `main` and PR review.
 
