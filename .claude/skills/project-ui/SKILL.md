@@ -13,11 +13,14 @@ machine says something different, follow this file.
 
 ## The look, in one paragraph
 
-Warm, quiet, editorial. An off-white paper ground rather than pure white, near-
-black warm text rather than `#000`, one green accent used sparingly for action
-and focus. Generous vertical space, restrained horizontal decoration. Typography
-carries the hierarchy; borders and shadows barely whisper. It should read like a
-well-set document, not a dashboard.
+The humidor room. A lacquered near-black ground rather than pure `#000`, warm
+ivory text rather than stark white, cedar-brown panels for cards, and one
+gilt-orange accent used the way foil is used on a cigar band -- sparingly, on
+the thing that matters. This is the site's one committed identity, not an
+OS-triggered dark mode: it does not lighten because a visitor's phone is set
+to light. Generous vertical space, restrained horizontal decoration.
+Typography carries the hierarchy; borders and shadows barely whisper. It
+should read like standing in the room, not like a dashboard.
 
 ## Pre-flight -- run through this before writing code
 
@@ -33,11 +36,15 @@ well-set document, not a dashboard.
 - Only token utilities: `bg-canvas`, `bg-surface`, `bg-sunken`, `text-ink`,
   `text-ink-muted`, `text-ink-faint`, `border-line`, `border-line-strong`,
   `bg-accent`, `text-accent`, `bg-accent-wash`, `text-danger`.
+- `text-band-gold`, `text-band-oxblood`, `text-band-bottle` exist for exactly
+  one purpose: the per-cigar band graphic (`cigar-placeholder-image.tsx`) that
+  tells products apart. Never use a band tone as general UI color.
 - **The accent is a budget, not a paint.** Roughly one accent element per
   viewport: the primary action, or a link, or a highlighted stat. Not all three.
 - Never a gradient as decoration. Never a colored drop shadow.
-- Dark mode is already handled by token overrides. Do not write `dark:`
-  variants; if something looks wrong in dark, fix the token, not the component.
+- There is no dark mode to toggle -- this palette _is_ the site, always. If
+  something looks wrong, fix the token in `tokens.css`, never branch on
+  `prefers-color-scheme` or write a `dark:` variant.
 
 ### Typography
 
@@ -47,8 +54,11 @@ well-set document, not a dashboard.
 - Two weights on a page: normal and medium. `font-bold` is a last resort.
 - Long-form text gets `<Container measure>` (~44rem). Never let body copy run
   the full page width.
-- Sentence case for headings and buttons. No Title Case, no ALL CAPS except the
-  small `text-caption uppercase tracking-wide` eyebrow label.
+- Sentence case for headings and buttons. No Title Case. `text-caption
+uppercase tracking-wide` is for field/data labels only (a stat's caption,
+  a form field label) -- never as a kicker/eyebrow sitting above a heading.
+  The heading carries its own weight; if something needs saying, say it in
+  the heading or the paragraph under it, not in a label above it.
 
 ### Space and layout
 
@@ -59,6 +69,10 @@ well-set document, not a dashboard.
   invented per component.
 - Prefer whitespace over borders and boxes for separation. Do not nest a card
   inside a card.
+- A row of same-size cards (icon/heading/text, repeated) is the lazy default,
+  not a pattern to reach for. A hairline-divided list (see the homepage
+  highlights, or a cigar's stat strip) usually reads better than boxing every
+  item -- one bordered container with internal dividers, not N separate cards.
 - Mobile first. Layouts stack by default and `md:`/`sm:` widen them.
 
 ### Shape and depth

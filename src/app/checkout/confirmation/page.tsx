@@ -119,8 +119,7 @@ export default function CheckoutConfirmationPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Thank you</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Your order is confirmed.</h1>
+        <h1 className="text-display text-ink font-serif">Your order is confirmed.</h1>
         <p className="text-lead text-ink-muted mt-4">
           We&apos;ll have it ready to leave the humidor room shortly.
         </p>

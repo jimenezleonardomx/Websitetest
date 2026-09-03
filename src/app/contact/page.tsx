@@ -12,8 +12,7 @@ export default function ContactPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Get in touch</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Visit, call, or write ahead.</h1>
+        <h1 className="text-display text-ink font-serif">Visit, call, or write ahead.</h1>
         <p className="text-lead text-ink-muted mt-6">
           The shop is easiest to reach in person — come by, take a seat, and talk through what
           you&apos;re after. For anything else, here&apos;s how to find us.

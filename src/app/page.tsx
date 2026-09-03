@@ -1,5 +1,5 @@
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Container } from '@/components/ui/container'
 
 const HIGHLIGHTS = [
@@ -25,11 +25,8 @@ export default function Home() {
   return (
     <main className="py-24">
       <Container>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">
-          Mount Street, London
-        </p>
-        <h1 className="max-w-measure text-display text-ink md:text-hero mt-4 font-serif">
-          Fine Havana cigars, kept the old way.
+        <h1 className="max-w-measure text-display text-ink md:text-hero font-serif">
+          Fine Havana cigars, kept the old way on Mount Street.
         </h1>
         <p className="max-w-measure text-lead text-ink-muted mt-6">
           Sautter has traded in Cuban and New World cigars from the same corner of Mayfair for two
@@ -37,16 +34,23 @@ export default function Home() {
         </p>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Button>Browse the cigars</Button>
-          <Button variant="secondary">Visit the shop</Button>
+          <Link href="/cigars">
+            <Button>Browse the cigars</Button>
+          </Link>
+          <Link href="/contact">
+            <Button variant="secondary">Visit the shop</Button>
+          </Link>
         </div>
 
-        <div className="mt-20 grid gap-4 sm:grid-cols-2">
+        <div className="border-line max-w-page mt-20 border-t">
           {HIGHLIGHTS.map((item) => (
-            <Card key={item.title} className="scroll-drift">
+            <div
+              key={item.title}
+              className="border-line scroll-drift grid gap-2 border-b py-8 sm:grid-cols-[16rem_1fr] sm:gap-10"
+            >
               <h2 className="text-title text-ink font-serif">{item.title}</h2>
-              <p className="text-body text-ink-muted mt-2">{item.body}</p>
-            </Card>
+              <p className="text-body text-ink-muted max-w-measure">{item.body}</p>
+            </div>
           ))}
         </div>
       </Container>

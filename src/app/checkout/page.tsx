@@ -73,8 +73,7 @@ export default function CheckoutPage() {
     return (
       <main className="py-24">
         <Container measure>
-          <p className="text-caption text-accent font-medium tracking-wide uppercase">Checkout</p>
-          <h1 className="text-display text-ink mt-4 font-serif">Nothing to check out.</h1>
+          <h1 className="text-display text-ink font-serif">Nothing to check out.</h1>
           <Card className="mt-10">
             <p className="text-body text-ink">Your cart is empty.</p>
             <p className="text-body text-ink-muted mt-2">
@@ -93,8 +92,7 @@ export default function CheckoutPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Checkout</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Delivery details.</h1>
+        <h1 className="text-display text-ink font-serif">Delivery details.</h1>
         <p className="text-lead text-ink-muted mt-4">
           This is a prototype — no payment is actually taken. Placing an order below simulates a
           completed, paid order.

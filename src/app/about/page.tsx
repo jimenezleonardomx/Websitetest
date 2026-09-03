@@ -4,8 +4,7 @@ export default function AboutPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Our story</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Over fifty years on Mount Street.</h1>
+        <h1 className="text-display text-ink font-serif">Over fifty years on Mount Street.</h1>
         <p className="text-lead text-ink-muted mt-6">
           Sautter opened as a small tobacconist decades ago, in the same stretch of Mayfair it still
           occupies today. The rule that has carried it through since has never changed: sell what

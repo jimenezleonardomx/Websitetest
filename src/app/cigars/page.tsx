@@ -6,8 +6,7 @@ export default function CigarsPage() {
   return (
     <main className="py-24">
       <Container>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">The range</p>
-        <h1 className="max-w-measure text-display text-ink mt-4 font-serif">
+        <h1 className="max-w-measure text-display text-ink font-serif">
           What we keep in the humidor.
         </h1>
         <p className="max-w-measure text-lead text-ink-muted mt-6">

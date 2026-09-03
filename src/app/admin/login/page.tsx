@@ -46,8 +46,7 @@ export default function AdminLoginPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Owner area</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Sign in.</h1>
+        <h1 className="text-display text-ink font-serif">Sign in.</h1>
         <p className="text-lead text-ink-muted mt-4">
           The order dashboard is only visible once you&apos;re signed in.
         </p>

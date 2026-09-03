@@ -31,36 +31,36 @@ export default async function CigarPage({ params }: { params: Promise<{ slug: st
           ← Back to the range
         </Link>
 
-        <CigarPlaceholderImage className="rounded-panel mt-8 border-b-0" />
+        <CigarPlaceholderImage cigar={cigar} className="rounded-panel mt-8 border-b-0" />
 
-        <p className="text-caption text-accent mt-8 font-medium tracking-wide uppercase">
-          {cigar.origin}
+        <p className="text-body text-ink-muted mt-8">
+          {cigar.brand} · {cigar.origin}
         </p>
-        <h1 className="text-display text-ink mt-4 font-serif">{cigar.name}</h1>
+        <h1 className="text-display text-ink mt-2 font-serif">{cigar.name}</h1>
         <p className="text-lead text-ink-muted mt-4">{cigar.summary}</p>
 
         <div className="mt-8">
           <AddToCart cigar={cigar} />
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Card className="text-center">
+        <Card className="divide-line mt-10 grid grid-cols-2 divide-y sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+          <div className="py-3 text-center first:pt-0 last:pb-0 sm:px-4 sm:py-0">
             <p className="text-caption text-ink-muted tracking-wide uppercase">Length</p>
             <p className="text-lead text-ink mt-1 font-serif">{cigar.length}</p>
-          </Card>
-          <Card className="text-center">
+          </div>
+          <div className="py-3 text-center first:pt-0 last:pb-0 sm:px-4 sm:py-0">
             <p className="text-caption text-ink-muted tracking-wide uppercase">Gauge</p>
             <p className="text-lead text-ink mt-1 font-serif">{cigar.ringGauge}</p>
-          </Card>
-          <Card className="text-center">
+          </div>
+          <div className="py-3 text-center first:pt-0 last:pb-0 sm:px-4 sm:py-0">
             <p className="text-caption text-ink-muted tracking-wide uppercase">Strength</p>
             <p className="text-lead text-ink mt-1 font-serif">{cigar.strength}</p>
-          </Card>
-          <Card className="text-center">
+          </div>
+          <div className="py-3 text-center first:pt-0 last:pb-0 sm:px-4 sm:py-0">
             <p className="text-caption text-ink-muted tracking-wide uppercase">Price</p>
             <p className="text-lead text-accent mt-1 font-serif">{cigar.price}</p>
-          </Card>
-        </div>
+          </div>
+        </Card>
 
         <h2 className="text-title text-ink mt-16 font-serif">Tasting note</h2>
         <p className="text-body text-ink-muted mt-4">{cigar.tastingNotes}</p>

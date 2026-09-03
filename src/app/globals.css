@@ -3,7 +3,9 @@
 
 @layer base {
   html {
-    color-scheme: light dark;
+    /* One committed dark identity, not an OS-triggered mode -- the humidor
+     * room doesn't get lighter because a visitor's phone is set to light. */
+    color-scheme: dark;
   }
 
   body {
@@ -22,6 +24,13 @@
 
   ::selection {
     background-color: var(--color-accent-wash);
+    color: var(--color-ink);
+  }
+
+  /* Themed scrollbar -- a browser default left alone is the cheapest tell
+   * that a page was assembled rather than built. */
+  * {
+    scrollbar-color: var(--color-line-strong) var(--color-canvas);
   }
 
   @media (prefers-reduced-motion: reduce) {

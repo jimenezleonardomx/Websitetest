@@ -130,12 +130,7 @@ export default function AdminDashboardPage() {
     <main className="py-16">
       <Container>
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-caption text-accent font-medium tracking-wide uppercase">
-              Owner area
-            </p>
-            <h1 className="text-display text-ink mt-2 font-serif">Orders</h1>
-          </div>
+          <h1 className="text-display text-ink font-serif">Orders</h1>
           <Button variant="ghost" size="sm" onClick={handleSignOut}>
             Sign out
           </Button>

@@ -14,8 +14,7 @@ export default function CartPage() {
   return (
     <main className="py-24">
       <Container measure>
-        <p className="text-caption text-accent font-medium tracking-wide uppercase">Your order</p>
-        <h1 className="text-display text-ink mt-4 font-serif">Cart</h1>
+        <h1 className="text-display text-ink font-serif">Your cart.</h1>
 
         {items.length === 0 ? (
           <Card className="mt-10">

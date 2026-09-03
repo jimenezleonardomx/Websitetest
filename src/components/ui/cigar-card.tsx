@@ -13,7 +13,7 @@ export function CigarCard({ cigar, className }: { cigar: Cigar; className?: stri
         className
       )}
     >
-      <CigarPlaceholderImage />
+      <CigarPlaceholderImage cigar={cigar} />
       <div className="p-8">
         <p className="text-caption text-ink-faint tracking-wide uppercase">
           {cigar.brand} · {cigar.origin}
